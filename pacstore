@@ -16,11 +16,11 @@ if [  $choice = "1" ]; then
 cd /home/$USER/pacstore
 echo Please type the application you"'"d like to download
 read app
-if [ $app = ]; then
-echo error do not do this, this may harm your system.
+if [[ $app == *" "* ]]; then
+echo please use - instead of space
 sleep 1
 exec "$0" "$@"
-elif [ $app = "/" ]; then
+elif [[ $app == *"/"* ]]; then
 echo error do not do this, this may harm your system.
 sleep 1
 exec "$0" "$@"
@@ -56,7 +56,7 @@ clear
 echo _________________________________________
 echo Please provide your password to check for updates
 echo _________________________________________
-sudo pacman -Syyuu
+'sudo' pacman -Syyuu
 clear
 echo Update Check Complete!
 sleep 2
@@ -74,7 +74,7 @@ clear
 echo _________________________________________
 echo Please Provide Your Password...
 echo _________________________________________
-sudo pacman -R $(pacman -Qdtq)
+'sudo' pacman -R $(pacman -Qdtq)
 clear
 echo Some Apps May Not Be Removed As Other Apps Require Them To Be Installed
 sleep 2
@@ -98,7 +98,7 @@ clear
 echo _________________________________________
 echo Please Enter Your Password
 echo _________________________________________
-sudo pacman -R $un
+'sudo' pacman -R $un
 echo Done
 sleep 2
 exec "$0" "$@"
