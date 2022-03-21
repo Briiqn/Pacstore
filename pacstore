@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 clear
 echo Welcome To The App Store! "(Pacman but easy)"
 sleep .5
@@ -13,10 +13,19 @@ echo 6: Exit
 echo _________________________________________
 read choice
 if [  $choice = "1" ]; then
+cd /home/$USER/pacstore
 echo Please type the application you"'"d like to download
 read app
+if [ $app = ]; then
+echo error do not do this, this may harm your system.
+sleep 1
+exec "$0" "$@"
+elif [ $app = "/" ]; then
+echo error do not do this, this may harm your system.
+sleep 1
+exec "$0" "$@"
+else
 nohup mkdir /home/$USER/pacstore
-cd /home/$USER/pacstore
 wget https://aur.archlinux.org/cgit/aur.git/snapshot/$app.tar.gz
 tar -xf $app.tar.gz
 cd $app
@@ -27,10 +36,12 @@ echo please enter your password
 echo _________________________________________
 sudo pacman -U $app*.pkg.tar.zst --noconfirm
 clear
+cd /home/$USER/pacstore
 cd .. && rm -rf $app/ $app*.tar.gz
 echo installation complete
 sleep 2
 exec "$0" "$@"
+fi
 elif [  $choice = "2" ]; then
 echo Please type the application you"'"d like to Search
 read app
