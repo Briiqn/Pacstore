@@ -1,0 +1,103 @@
+ #!/bin/bash
+clear
+echo Welcome To The App Store! "(Pacman but easy)"
+sleep .5
+echo _________________________________________
+echo Please choose the following options
+echo 1: Install App
+echo 2: Search App
+echo 3: Check for updates
+echo 4: Remove unused apps
+echo 5: Remove Apps
+echo 6: Exit
+echo _________________________________________
+read choice
+if [  $choice = "1" ]; then
+echo Please type the application you"'"d like to download
+read app
+nohup mkdir /home/$USER/pacstore
+cd /home/$USER/pacstore
+wget https://aur.archlinux.org/cgit/aur.git/snapshot/$app.tar.gz
+tar -xf $app.tar.gz
+cd $app
+makepkg -f
+clear
+echo _________________________________________
+echo please enter your password
+echo _________________________________________
+sudo pacman -U $app*.pkg.tar.zst --noconfirm
+clear
+cd .. && rm -rf $app/ $app*.tar.gz
+echo installation complete
+sleep 2
+exec "$0" "$@"
+elif [  $choice = "2" ]; then
+echo Please type the application you"'"d like to Search
+read app
+xdg-open "https://aur.archlinux.org/packages?O=0&K="$app
+sleep 1
+clear
+echo done
+sleep 2
+exec "$0" "$@"
+elif [  $choice = "3" ]; then
+clear
+echo _________________________________________
+echo Please provide your password to check for updates
+echo _________________________________________
+sudo pacman -Syyuu
+clear
+echo Update Check Complete!
+sleep 2
+exec "$0" "$@"
+elif [  $choice = "4" ]; then
+clear
+echo the apps listed below are unused
+echo _________________________________________
+pacman -Qdtq
+echo _________________________________________
+echo "would you like to remove them all? [Y/N]"
+read ans
+if [[ $ans = [Yy] ]]; then
+clear
+echo _________________________________________
+echo Please Provide Your Password...
+echo _________________________________________
+sudo pacman -R $(pacman -Qdtq)
+clear
+echo Some Apps May Not Be Removed As Other Apps Require Them To Be Installed
+sleep 2
+exec "$0" "$@"
+elif [[ $ans = [Nn] ]]; then
+echo ok cancelling
+clear
+echo Update Check Complete!
+sleep 2
+exec "$0" "$@"
+fi
+elif [  $choice = "5" ]; then
+echo Here"'"s a list of all installed Applications
+sleep 2
+echo _________________________________________
+pacman -Q
+echo _________________________________________
+echo Please Type The Name Of the App You"'"d Like To Uninstall
+read un
+clear
+echo _________________________________________
+echo Please Enter Your Password
+echo _________________________________________
+sudo pacman -R $un
+echo Done
+sleep 2
+exec "$0" "$@"
+elif [  $choice = "6" ]; then
+echo Goodbye...
+sleep 1
+kill -9 $PPID
+else
+echo error
+sleep 1
+exec "$0" "$@"
+fi
+
