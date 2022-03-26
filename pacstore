@@ -24,6 +24,10 @@ elif [[ $app == *"/"* ]]; then
 echo error do not do this, this may harm your system.
 sleep 1
 exec "$0" "$@"
+elif [ $app = ]; then
+echo error do not do this, this may harm your system.
+sleep 1
+exec "$0" "$@"
 else
 nohup mkdir /home/$USER/pacstore
 wget https://aur.archlinux.org/cgit/aur.git/snapshot/$app.tar.gz
@@ -82,7 +86,7 @@ exec "$0" "$@"
 elif [[ $ans = [Nn] ]]; then
 echo ok cancelling
 clear
-echo Update Check Complete!
+echo Done
 sleep 2
 exec "$0" "$@"
 fi
@@ -107,6 +111,7 @@ echo Goodbye...
 sleep 1
 kill -9 $PPID
 else
+clear
 echo error
 sleep 1
 exec "$0" "$@"
